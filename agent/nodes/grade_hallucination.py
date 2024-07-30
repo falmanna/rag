@@ -29,10 +29,10 @@ class GradeHallucinations(BaseNode):
         parser = get_pydantic_parser(HallucinationsGrade)
 
         system = """You are a Arabic grader assessing whether an LLM generation is grounded in / supported by a set of retrieved facts. \n 
-            Give a binary hallucination score 'true' or 'false'. \n
-            'false' means that the answer is not a hallucination and is grounded in / supported by the set of facts. \n
-            Explain why did you take your decision as the 'why'. \n\n
-            {format_instructions}"""
+        Give a binary hallucination score 'true' or 'false'. \n
+        'false' means that the answer is not a hallucination and is grounded in / supported by the set of facts. \n
+        Explain why did you take your decision as the 'why'. \n\n
+        {format_instructions}"""
         hallucination_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", system),

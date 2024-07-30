@@ -33,10 +33,10 @@ class GradeDocuments(BaseNode):
         parser = get_pydantic_parser(DocumentsGrade)
 
         system = """You are an Arabic grader assessing relevance of a retrieved Arabic document to a user question. \n 
-            If the document contains keyword(s) or semantic meaning close to the meaning of the question, grade it as relevant. \n
-            Give a binary score 'true' or 'false' score to indicate whether the document is relevant to the question. \n
-            Explain why did you take your decision as the 'why'.\n\n
-            {format_instructions}"""
+        If the document contains keyword(s) or semantic meaning close to the meaning of the question, grade it as relevant. \n
+        Give a binary score 'true' or 'false' score to indicate whether the document is relevant to the question. \n
+        Explain why did you take your decision as the 'why'.\n\n
+        {format_instructions}"""
         grade_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", system),

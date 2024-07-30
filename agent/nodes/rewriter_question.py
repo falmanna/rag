@@ -28,10 +28,10 @@ class QuestionRewriter(BaseNode):
         parser = get_pydantic_parser(QuestionQuery)
 
         system = """You are an Arabic question rewriting expert. \n
-            Based on the user question, your task is to generate a query in Arabic to retrieve relevant documents from a vector database. \n
-            By generating a better query, your goal is to help the user overcome some of the limitations of the distance-based similarity search. \n
-            Provide the new query as 'value'.\n\n
-            {format_instructions}"""
+        Based on the user question, your task is to generate a query in Arabic to retrieve relevant documents from a vector database. \n
+        By generating a better query, your goal is to help the user overcome some of the limitations of the distance-based similarity search. \n
+        Provide the new query as 'value'.\n\n
+        {format_instructions}"""
 
         prompt = ChatPromptTemplate.from_messages(
             [

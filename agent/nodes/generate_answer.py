@@ -38,11 +38,11 @@ class GenerateAnswer(BaseNode):
         parser = get_pydantic_parser(Generation)
 
         system = """You are an assistant for question-answering tasks in Arabic. \n
-            Use the following pieces of retrieved context to answer the question. \n
-            If you don't know the answer, just say that you don't know. \n
-            Use three sentences maximum and keep the answer concise. \n
-            Cite the facts that support your decision (if any) as the 'references'. \n
-            Answer in Arabic language only. \n\n
+        Use the following pieces of retrieved context to answer the question. \n
+        If you don't know the answer, just say that you don't know. \n
+        Use three sentences maximum and keep the answer concise. \n
+        Cite the facts that support your decision (if any) as the 'references'. \n
+        Answer in Arabic language only. \n\n
             {format_instructions}"""
 
         prompt = ChatPromptTemplate.from_messages(

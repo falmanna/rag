@@ -29,8 +29,8 @@ class GradeQuestion(BaseNode):
         parser = get_pydantic_parser(QuestionGrade)
 
         system = """You are an expert at rating users questions in Arabic. \n
-            Accept questions that are BOTH in Arabic language AND can be answered by searching Arabic wikipedia. \n
-            For all else, reject. \n\n
+        Accept questions that are BOTH in Arabic language AND can be answered by searching Arabic wikipedia. \n
+        For all else, reject. \n\n
             {format_instructions}"""
         route_prompt = ChatPromptTemplate.from_messages(
             [

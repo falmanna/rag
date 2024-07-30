@@ -14,8 +14,14 @@ class Reject(BaseNode):
     def invoke(cls, state: GraphState) -> dict[str, Any]:
         print_with_time("---REJECT---")
 
-        rejection = """
-        السؤال خارج حدود معرفتي, تخصصي هو الاجابة على اسئلة متعلقة بموسوعة ويكيبيديا باللغة العربية فقط. \n
-        يرجى تقديم سؤال آخر."""
+        rejection: str
+        if not state.question_accepted:
+            rejection = """
+            السؤال خارج حدود معرفتي, تخصصي هو الاجابة على اسئلة متعلقة بموسوعة ويكيبيديا باللغة العربية فقط. \n
+            يرجى تقديم سؤال آخر."""
+        else:
+            rejection = """
+            عذرا, لم استطع ايجاد مصادر مناسبة للسؤال المطروح. \n
+            يرجى تقديم سؤال آخر او ايضاح السؤال."""
 
         return {"generation": rejection}

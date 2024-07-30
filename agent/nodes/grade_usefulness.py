@@ -29,9 +29,9 @@ class GradeUsefulness(BaseNode):
         parser = get_pydantic_parser(UsefulnessGrade)
 
         system = """You are a Arabic grader assessing whether an answer addresses / resolves a question. \n 
-            Give a binary score 'true' or 'false'. 'true' means that the answer resolves the question. \n
-            Explain why did you take your decision as the 'why'.\n\n
-            {format_instructions}"""
+        Give a binary score 'true' or 'false'. 'true' means that the answer resolves the question. \n
+        Explain why did you take your decision as the 'why'.\n\n
+        {format_instructions}"""
         answer_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", system),
