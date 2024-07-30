@@ -1,0 +1,41 @@
+services:
+
+  infinity-server:
+    image: michaelf34/infinity:latest
+    pull_policy: if_not_present
+    restart: unless-stopped
+    container_name: infinity
+    profiles:
+      - infinity
+    ports:
+      - "7997:7997"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7997/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    environment:
+      - INFINITY_MODEL_ID=${EMBEDDING_MODEL_NAME};${RERANKING_MODEL_NAME}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+
+  pgvecto-rs:
+    image: tensorchord/pgvecto-rs:pg16-v0.2.0
+    pull_policy: if_not_present
+    restart: unless-stopped
+    environment:
+      PGUSER: ${PGVECTOR_PGUSER:-postgres}
+      POSTGRES_PASSWORD: ${PGVECTOR_POSTGRES_PASSWORD:-feras123456}
+      POSTGRES_DB: ${PGVECTOR_POSTGRES_DB:-feras}
+      PGDATA: ${PGVECTOR_PGDATA:-/var/lib/postgresql/data/pgdata}
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    ports:
+      - "${PGVECTOR_PORT:-5432}:${PGVECTOR_PORT:-5432}"

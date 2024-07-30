@@ -1,0 +1,6 @@
+REJECT = "reject"
+RETRIEVE = "retrieve"
+REWRITE = "rewrite"
+GRADE_DOCUMENTS = "grade_documents"
+GENERATE = "generate"
+WEBSEARCH = "websearch"
