@@ -16,5 +16,5 @@ class RetrieveDocs(BaseNode):
         print_with_time("---RETRIEVE---")
         query = state.query or state.question
 
-        documents = get_vectorstore_retriever().invoke(query)
+        documents = get_vectorstore_retriever(embedding_device="cpu").invoke(query)
         return {"documents": documents}

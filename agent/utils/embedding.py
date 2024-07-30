@@ -6,12 +6,12 @@ from langchain_ollama import OllamaEmbeddings
 from configs import EMBEDDING_DEVICE, EMBEDDING_MODEL_NAME, EMBEDDING_PROVIDER
 
 
-def get_embedding() -> Embeddings:
+def get_embedding(*, device: str = None) -> Embeddings:
     match EMBEDDING_PROVIDER:
         case "huggingface":
             return HuggingFaceEmbeddings(
                 model_name=EMBEDDING_MODEL_NAME,
-                model_kwargs={"device": EMBEDDING_DEVICE},
+                model_kwargs={"device": device or EMBEDDING_DEVICE},
                 cache_folder="./.huggingface/embedding",
             )
         case "ollama":
@@ -22,7 +22,7 @@ def get_embedding() -> Embeddings:
                 # best to keep at 32
                 batch_size=32,
                 # for AMD/Nvidia GPUs via torch
-                device=EMBEDDING_DEVICE,
+                device=device or EMBEDDING_DEVICE,
             )
         case "infinity-server":
             return InfinityEmbeddings(
