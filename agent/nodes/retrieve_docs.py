@@ -3,7 +3,7 @@ from typing import Any, Dict
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
 from agent.utils.misc import print_with_time
-from agent.utils.retriever import get_vectorstore_retriever
+from agent.utils.retriever import get_retriever
 
 
 class RetrieveDocs(BaseNode):
@@ -16,5 +16,5 @@ class RetrieveDocs(BaseNode):
         print_with_time("---RETRIEVE---")
         query = state.query or state.question
 
-        documents = get_vectorstore_retriever(embedding_device="cpu").invoke(query)
+        documents = get_retriever(embedding_device="cpu").invoke(query)
         return {"documents": documents}
