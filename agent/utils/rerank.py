@@ -1,3 +1,5 @@
+import os
+
 from langchain.retrievers.document_compressors import CrossEncoderReranker
 from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 
@@ -11,7 +13,7 @@ def get_reranker(embedding_device: str = None, limit: int = 5):
             model_kwargs={
                 "device": embedding_device or EMBEDDING_DEVICE,
                 "automodel_args": {
-                    "cache_dir": "./.huggingface/embedding",
+                    "cache_dir": os.path.join(os.getcwd(), ".huggingface", "embedding"),
                 },
             },
         ),

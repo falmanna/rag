@@ -1,4 +1,5 @@
 import asyncio
+import os
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Iterator, List
 
@@ -42,7 +43,7 @@ def lazy_load_dataset():
     dataset = load_dataset(
         path="wikimedia/wikipedia",
         name="20231101.ar",
-        cache_dir="./.huggingface/dataset",
+        cache_dir=os.path.join(os.getcwd(), ".huggingface", "dataset"),
         save_infos=True,
         num_proc=NUMBER_OF_CORES,
     )

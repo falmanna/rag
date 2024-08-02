@@ -1,3 +1,5 @@
+import os
+
 from langchain_community.embeddings import InfinityEmbeddings, InfinityEmbeddingsLocal
 from langchain_core.embeddings import Embeddings
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -12,7 +14,7 @@ def get_embedding(*, device: str = None) -> Embeddings:
             return HuggingFaceEmbeddings(
                 model_name=EMBEDDING_MODEL_NAME,
                 model_kwargs={"device": device or EMBEDDING_DEVICE},
-                cache_folder="./.huggingface/embedding",
+                cache_folder=os.path.join(os.getcwd(), ".huggingface", "embedding"),
             )
         case "ollama":
             return OllamaEmbeddings(model=EMBEDDING_MODEL_NAME)

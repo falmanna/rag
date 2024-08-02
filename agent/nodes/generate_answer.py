@@ -43,7 +43,7 @@ class GenerateAnswer(BaseNode):
         Use three sentences maximum and keep the answer concise. \n
         Cite the facts that support your decision (if any) as the 'references'. \n
         Answer in Arabic language only. \n\n
-            {format_instructions}"""
+        {format_instructions}"""
 
         prompt = ChatPromptTemplate.from_messages(
             [
@@ -63,6 +63,7 @@ class GenerateAnswer(BaseNode):
         generation: Generation = cls.get_chain().invoke(
             {"context": documents, "question": question}
         )
+
         return {
             "generation": generation.answer,
             "references": generation.references,

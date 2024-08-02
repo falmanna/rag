@@ -1,5 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.runnables.config import RunnableConfig
 
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
@@ -45,12 +46,15 @@ class GradeUsefulness(BaseNode):
         return answer_prompt | llm | parser
 
     @classmethod
-    def invoke(cls, state: GraphState):
-        print_with_time("---GRADE USEFULNESS: ANSWER vs QUESTION---")
+    def invoke(cls, state: GraphState, config: RunnableConfig):
         question = state.question
         generation = state.generation
         references = state.references
 
+        if not config["configurable"].get("usefulness_grader"):
+            return {"usefulness_score": None}
+
+        print_with_time("---GRADE USEFULNESS: ANSWER vs QUESTION---")
         grade: UsefulnessGrade = cls.get_chain().invoke(
             {"question": question, "generation": generation, "references": references}
         )

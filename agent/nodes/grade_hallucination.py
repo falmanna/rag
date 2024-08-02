@@ -1,5 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.runnables.config import RunnableConfig
 
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
@@ -46,12 +47,15 @@ class GradeHallucinations(BaseNode):
         return hallucination_prompt | llm | parser
 
     @classmethod
-    def invoke(cls, state: GraphState) -> str:
-        print_with_time("---GRADE HALLUCINATION: ANSWER vs QUESTION---")
+    def invoke(cls, state: GraphState, config: RunnableConfig) -> str:
         documents = state.documents
         generation = state.generation
         references = state.references
 
+        if not config["configurable"].get("hallucination_grader"):
+            return {"hallucination_score": None}
+
+        print_with_time("---GRADE HALLUCINATION: ANSWER vs QUESTION---")
         hallucination: HallucinationsGrade = cls.get_chain().invoke(
             {"documents": documents, "generation": generation, "references": references}
         )

@@ -24,9 +24,12 @@ python-dotenv = "^1.0.1"
 semantic-text-splitter = "^0.14.1"
 tqdm = "^4.66.4"
 pgvecto-rs = { extras = ["sdk"], version = "^0.1.5" }
+infinity-emb = { extras = ["optimum", "torch"], version = "^0.0.53" }
 
+# fix for permissions conflic
 protobuf = "4.25.4"
-infinity-emb = {extras = ["optimum", "torch"], version = "^0.0.53"}
+
+chainlit = "^1.1.400"
 
 [build-system]
 requires = ["poetry-core"]
