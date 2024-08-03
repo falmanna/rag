@@ -29,6 +29,10 @@ def send_queries(state: GraphState):
     ]
 
 
+def group_docs(state: GraphState):
+    return {"documents": state.documents}
+
+
 def get_main_graph():
     graph = StateGraph(GraphState, config_schema=GraphConfig)
 
@@ -58,8 +62,11 @@ def get_main_graph():
         QueryGenerator.get_name(), send_queries, ["retriever_subgraph"]
     )
 
+    graph.add_node("group_docs", group_docs)
+    graph.add_edge("retriever_subgraph", "group_docs")
+
     graph.add_conditional_edges(
-        "retriever_subgraph",
+        "group_docs",
         decide_to_generate,
         {
             "generate": GenerateAnswer.get_name(),

@@ -14,15 +14,17 @@ if __name__ == "__main__":
 
     print_with_time(
         app.invoke(
-            input={"question": "متى وقعت مذبحة طبريا؟"},
+            input={"question": "متى تم اختراع الإنترنت وعلى يد من؟"},
             config={
                 "configurable": {
                     "embedding_rerank": True,
                     "usefulness_grader": True,
                     "hallucination_grader": True,
+                    "question_rewriter": False,
+                    "llm_listwise_rerank": True,
                 }
             },
-        )
+        ).get("generation")
     )
 
     # get_vectorstore_retriever().invoke("هل زار اينشتاين جامعة ليتكولن؟")
