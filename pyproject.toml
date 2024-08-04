@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "qanoniah-rag"
+name = "arabic-rag"
 version = "0.1.0"
 description = ""
 authors = ["Feras <firas.almanna3@gmail.com>"]
@@ -15,10 +15,8 @@ langchain = "^0.2.11"
 langchain-community = "0.2.6"
 langchain-ollama = "^0.1.0"
 langchain-huggingface = "^0.0.3"
-langchain-qdrant = "^0.1.3"
-langchain-milvus = "^0.1.3"
-langchain-chroma = "^0.1.2"
 langchain-postgres = "^0.0.9"
+langchain-openai = "^0.1.20"
 
 python-dotenv = "^1.0.1"
 semantic-text-splitter = "^0.14.1"
@@ -30,6 +28,7 @@ infinity-emb = { extras = ["optimum", "torch"], version = "^0.0.53" }
 protobuf = "4.25.4"
 
 chainlit = "^1.1.400"
+langchain-cohere = "^0.2.0"
 
 [build-system]
 requires = ["poetry-core"]
