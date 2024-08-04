@@ -17,6 +17,9 @@ langchain-ollama = "^0.1.0"
 langchain-huggingface = "^0.0.3"
 langchain-postgres = "^0.0.9"
 langchain-openai = "^0.1.20"
+langchain-cohere = "^0.2.0"
+langchain-together = "^0.1.5"
+langchain-groq = "^0.1.9"
 
 python-dotenv = "^1.0.1"
 semantic-text-splitter = "^0.14.1"
@@ -28,7 +31,6 @@ infinity-emb = { extras = ["optimum", "torch"], version = "^0.0.53" }
 protobuf = "4.25.4"
 
 chainlit = "^1.1.400"
-langchain-cohere = "^0.2.0"
 
 [build-system]
 requires = ["poetry-core"]

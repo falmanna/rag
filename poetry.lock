@@ -948,6 +948,25 @@ docs = ["Sphinx", "furo"]
 test = ["objgraph", "psutil"]
 
 [[package]]
+name = "groq"
+version = "0.9.0"
+description = "The official Python library for the groq API"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "groq-0.9.0-py3-none-any.whl", hash = "sha256:d0e46f4ad645504672bb09c8100af3ced3a7db0d5119dc13e4aca535fc455874"},
+    {file = "groq-0.9.0.tar.gz", hash = "sha256:130ed5e35d3acfaab46b9e7a078eeaebf91052f4a9d71f86f87fb319b5fec332"},
+]
+
+[package.dependencies]
+anyio = ">=3.5.0,<5"
+distro = ">=1.7.0,<2"
+httpx = ">=0.23.0,<1"
+pydantic = ">=1.9.0,<3"
+sniffio = "*"
+typing-extensions = ">=4.7,<5"
+
+[[package]]
 name = "grpcio"
 version = "1.65.4"
 description = "HTTP/2-based RPC framework"
@@ -1423,6 +1442,21 @@ langchain-community = ">=0.2.6,<0.3.0"
 langchain-core = ">=0.2.10,<0.3.0"
 
 [[package]]
+name = "langchain-groq"
+version = "0.1.9"
+description = "An integration package connecting Groq and LangChain"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "langchain_groq-0.1.9-py3-none-any.whl", hash = "sha256:632ba94bc05de2217f0dfd37be5892faa49eca6afdfe577926447024a96eef80"},
+    {file = "langchain_groq-0.1.9.tar.gz", hash = "sha256:0f28a4df00e8d58b024fd83dc338795baf439769d582de5cced48951aa00bbce"},
+]
+
+[package.dependencies]
+groq = ">=0.4.1,<1"
+langchain-core = ">=0.2.26,<0.3.0"
+
+[[package]]
 name = "langchain-huggingface"
 version = "0.0.3"
 description = "An integration package connecting Hugging Face and LangChain"
@@ -1503,6 +1537,23 @@ files = [
 
 [package.dependencies]
 langchain-core = ">=0.2.10,<0.3.0"
+
+[[package]]
+name = "langchain-together"
+version = "0.1.5"
+description = "An integration package connecting Together AI and LangChain"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "langchain_together-0.1.5-py3-none-any.whl", hash = "sha256:785e625adab8334a49a02af5893ef1e4d4affc4e90cd29b92da7265d5dbb41f3"},
+    {file = "langchain_together-0.1.5.tar.gz", hash = "sha256:049aae10eece64b83fa4bd6047571c3524efaa7f53a73968857c89748792ae59"},
+]
+
+[package.dependencies]
+aiohttp = ">=3.9.1,<4.0.0"
+langchain-core = ">=0.2.26,<0.3.0"
+langchain-openai = ">=0.1.16,<0.2.0"
+requests = ">=2,<3"
 
 [[package]]
 name = "langgraph"
@@ -4606,4 +4657,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "f34cad91725ce7d7a4310805f93efc924bbb98e54f171effd449e19913f11f3a"
+content-hash = "058bc18e85f87b42715a7f684aed7cf7375d465ba64e20a30bfcaa161c3dc18a"
