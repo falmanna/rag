@@ -721,6 +721,23 @@ files = [
 ]
 
 [[package]]
+name = "fireworks-ai"
+version = "0.15.0"
+description = "Python client library for the Fireworks.ai Generative AI Platform"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "fireworks_ai-0.15.0-py3-none-any.whl", hash = "sha256:4c36a71c0699b0d542888980650827fda4364f388caec68d180c4222fbd3955f"},
+    {file = "fireworks_ai-0.15.0.tar.gz", hash = "sha256:1137d230e230acbdcdc0b1ab1b5aa9f8c4a5abbf523813d15935634d5510bf6b"},
+]
+
+[package.dependencies]
+httpx = "*"
+httpx-sse = "*"
+Pillow = "*"
+pydantic = "*"
+
+[[package]]
 name = "flatbuffers"
 version = "24.3.25"
 description = "The FlatBuffers serialization format for Python"
@@ -1440,6 +1457,24 @@ files = [
 [package.dependencies]
 langchain-community = ">=0.2.6,<0.3.0"
 langchain-core = ">=0.2.10,<0.3.0"
+
+[[package]]
+name = "langchain-fireworks"
+version = "0.1.7"
+description = "An integration package connecting Fireworks and LangChain"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+files = [
+    {file = "langchain_fireworks-0.1.7-py3-none-any.whl", hash = "sha256:740ff8739835d2331ec20ca189c1bdf1600db260b1af7295f67aaa90124c66da"},
+    {file = "langchain_fireworks-0.1.7.tar.gz", hash = "sha256:b3ad57a3b8173b172d16d6c3051859a2240f1cbece18338eafa40bc83250091b"},
+]
+
+[package.dependencies]
+aiohttp = ">=3.9.1,<4.0.0"
+fireworks-ai = ">=0.13.0"
+langchain-core = ">=0.2.26,<0.3.0"
+openai = ">=1.10.0,<2.0.0"
+requests = ">=2,<3"
 
 [[package]]
 name = "langchain-groq"
@@ -4657,4 +4692,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "058bc18e85f87b42715a7f684aed7cf7375d465ba64e20a30bfcaa161c3dc18a"
+content-hash = "5034200e1ac916d7506bff0af6e12982bda744bd71f3e09591061840be5dc8e7"

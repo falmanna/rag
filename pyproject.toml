@@ -31,6 +31,7 @@ infinity-emb = { extras = ["optimum", "torch"], version = "^0.0.53" }
 protobuf = "4.25.4"
 
 chainlit = "^1.1.400"
+langchain-fireworks = "^0.1.7"
 
 [build-system]
 requires = ["poetry-core"]

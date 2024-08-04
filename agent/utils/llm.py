@@ -1,6 +1,7 @@
 from typing import Literal
 
 from langchain_cohere import ChatCohere
+from langchain_fireworks import ChatFireworks
 from langchain_groq import ChatGroq
 from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
@@ -27,5 +28,8 @@ def get_llm(
             return ChatTogether(model=model, temperature=temperature)
         case "groq":
             return ChatGroq(model=model, temperature=temperature)
+        case "fireworks":
+            return ChatFireworks(model=model, temperature=temperature)
+
         case _:
             raise ValueError(f"Unknown LLM provider: {provider}")
