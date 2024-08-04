@@ -12,7 +12,7 @@ from agent.utils.misc import print_with_time
 
 class DocumentsGrade(BaseModel):
     relevant: bool = Field(
-        description="Documents are relevant to the query, 'true' or 'false'"
+        description="Documents are relevant to the question, 'true' or 'false'"
     )
     why: str = Field(
         description="Reasoning for the relevance score",
@@ -29,16 +29,16 @@ class GradeDocuments(BaseNode):
         llm = get_llm()
         structured_llm_grader = llm.with_structured_output(DocumentsGrade)
 
-        system = """You are an Arabic grader assessing relevance of a retrieved Arabic document to a user query. \n 
-        If the document have a semantic meaning close to the meaning of the query, grade it as relevant. \n
-        Give a binary score 'true' or 'false' score to indicate whether the document is relevant to the query. \n
-        Explain why did you take your decision as the 'why'."""
+        system = """You are an Arabic grader assessing the relevance of retrieved Arabic documents to a user question. \n 
+        If the document's semantic meaning closely matches the question's meaning, grade it as relevant. \n
+        Provide a binary score of 'true' for relevant and 'false' for not relevant. \n
+        Explain your decision as the 'why'."""
         grade_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", system),
                 (
                     "human",
-                    "Retrieved documents: \n\n {documents} \n\n User query: {query}",
+                    "Retrieved documents: \n\n {documents} \n\n User Question: {question}",
                 ),
             ]
         )
@@ -49,17 +49,17 @@ class GradeDocuments(BaseNode):
     def invoke(
         cls, state: RetrieverSubGraphState, config: RunnableConfig
     ) -> dict[str, Any]:
-        query = state.query
+        question = state.original_question
         documents = state.documents
 
-        if not config["configurable"].get("llm_listwise_rerank"):
+        if not config["configurable"].get("llm_rerank"):
             return {"documents": documents}
 
-        print_with_time("---LISWISE RERANK: CHECK DOCUMENT RELEVANCE TO query---")
+        print_with_time("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
         filtered_docs = []
         for d in documents:
             score: DocumentsGrade = cls.get_chain().invoke(
-                {"query": query, "documents": d.page_content}
+                {"question": question, "documents": d.page_content}
             )
             if score.relevant:
                 print_with_time(

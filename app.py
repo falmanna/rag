@@ -10,7 +10,7 @@ from agent.state import GraphConfig
 async def update_settings(settings):
     configs = GraphConfig(
         embedding_rerank=settings["embedding_rerank"],
-        llm_listwise_rerank=settings["llm_listwise_rerank"],
+        llm_rerank=settings["llm_rerank"],
         question_rewriter=settings["question_rewriter"],
         usefulness_grader=settings["usefulness_grader"],
         hallucination_grader=settings["hallucination_grader"],
@@ -27,9 +27,7 @@ async def on_chat_start():
             Switch(
                 id="embedding_rerank", label="Enable embedding rerank", initial=False
             ),
-            Switch(
-                id="llm_listwise_rerank", label="Enable listwise rerank", initial=False
-            ),
+            Switch(id="llm_rerank", label="Enable listwise rerank", initial=False),
             Switch(
                 id="question_rewriter", label="Enable question rewrite", initial=False
             ),

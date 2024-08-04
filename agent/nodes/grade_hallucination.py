@@ -25,10 +25,10 @@ class GradeHallucinations(BaseNode):
         llm = get_llm()
         structured_llm_grader = llm.with_structured_output(HallucinationsGrade)
 
-        system = """You are a Arabic grader assessing whether an LLM generation is grounded in / supported by a set of retrieved facts. \n 
-        Give a binary hallucination score 'true' or 'false'. \n
-        'false' means that the answer is not a hallucination and is grounded in / supported by the set of facts. \n
-        Explain why did you take your decision as the 'why'."""
+        system = """You are an Arabic grader assessing whether an LLM generation is supported by a set of retrieved facts. \n 
+        Give a binary score: 'true' or 'false'. \n
+        'false' means the answer is not a hallucination and is supported by the facts. \n
+        Explain your decision as the 'why'."""
         hallucination_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", system),

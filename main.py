@@ -14,14 +14,16 @@ if __name__ == "__main__":
 
     print_with_time(
         app.invoke(
-            input={"question": "متى تم اختراع الإنترنت وعلى يد من؟"},
+            input={
+                "question": "ما هو تاريخ بدء التقويم الهجري، وما هو الحدث الذي تم اعتماده كنقطة انطلاق لهذا التقويم؟"
+            },
             config={
                 "configurable": {
                     "embedding_rerank": True,
                     "usefulness_grader": True,
                     "hallucination_grader": True,
-                    "question_rewriter": False,
-                    "llm_listwise_rerank": True,
+                    "question_rewriter": True,
+                    "llm_rerank": True,
                 }
             },
         ).get("generation")

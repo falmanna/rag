@@ -24,10 +24,12 @@ class QueryGenerator(BaseNode):
         llm = get_llm()
         structured_llm_query_writer = llm.with_structured_output(GeneratedQueries)
 
-        system = """You are an Arabic question rewriting expert. \n
-        Based on the user question, your task is to generate a single or multiple queries in Arabic \n
-        The queries will be used to retrieve relevant documents from a vector database. \n
-        You should generate different queries for different concepts in the user's question."""
+        system = """You are an expert in rewriting questions in Arabic. \n
+        Given a user's question, your task is to generate multiple queries in Arabic. \n
+        These queries will be used to retrieve relevant documents from a vector database. \n
+        Create distinct and clear queries for each unique concept within the user's question. \n
+        Ensure each query is standalone, isolated, and does not overlap or repeat information from other queries. \n
+        Avoid using vague or ambiguous references in your queries."""
 
         prompt = ChatPromptTemplate.from_messages(
             [

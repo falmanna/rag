@@ -24,7 +24,10 @@ def decide_to_generate(state: GraphState):
 
 def send_queries(state: GraphState):
     return [
-        Send("retriever_subgraph", RetrieverSubGraphState(query=query))
+        Send(
+            "retriever_subgraph",
+            RetrieverSubGraphState(original_question=state.question, query=query),
+        )
         for query in state.queries
     ]
 
