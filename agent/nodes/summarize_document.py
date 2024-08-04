@@ -26,8 +26,7 @@ class SummarizeDocuments(BaseNode):
         query = state.query
         documents = state.documents
 
-        # only summarize if the query generation is enabled to save context
-        if not config["configurable"].get("question_rewriter"):
+        if not config["configurable"].get("summarize_docs"):
             return {"documents": documents}
 
         print_with_time("---DOCUMENT COMPRESSOR---")

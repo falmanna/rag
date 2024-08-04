@@ -25,11 +25,11 @@ async def on_chat_start():
     await cl.ChatSettings(
         [
             Switch(
-                id="embedding_rerank", label="Enable embedding rerank", initial=False
+                id="embedding_rerank", label="Enable embedding rerank", initial=True
             ),
-            Switch(id="llm_rerank", label="Enable listwise rerank", initial=False),
+            Switch(id="llm_rerank", label="Enable LLM rerank", initial=False),
             Switch(
-                id="question_rewriter", label="Enable question rewrite", initial=False
+                id="question_rewriter", label="Enable question rewrite", initial=True
             ),
             Switch(
                 id="usefulness_grader", label="Enable usefulness grader", initial=False
@@ -37,6 +37,11 @@ async def on_chat_start():
             Switch(
                 id="hallucination_grader",
                 label="Enable hallucination grader",
+                initial=False,
+            ),
+            Switch(
+                id="summarize_docs",
+                label="Enable document summarization (Enable if context windows is small)",
                 initial=False,
             ),
         ]
@@ -51,6 +56,7 @@ async def on_message(msg: cl.Message):
     app: CompiledStateGraph = cl.user_session.get("app")
     configs: GraphConfig = cl.user_session.get("configs")
 
+    response = None
     try:
         async for event in app.astream(
             {"question": msg.content},
@@ -63,7 +69,9 @@ async def on_message(msg: cl.Message):
                     await step.update()
 
                 if "generation" in event[key]:
-                    await cl.Message(content=event[key]["generation"]).send()
+                    response = cl.Message(content=event[key]["generation"])
     except Exception as e:
         print("ERROR:", e)
-        await cl.Message(content="An error occurred, please try again.").send()
+        response = cl.Message(content="An error occurred, please try again.")
+    finally:
+        await response.send()

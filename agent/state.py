@@ -22,7 +22,7 @@ class GraphState(BaseModel):
     queries: Optional[list[str]]
     documents: Annotated[list[Document], merge_and_deduplicate_lists]
     generation: Optional[str]
-    references: Optional[list[str]]
+    references: Optional[str]
     hallucination_score: Optional[bool]
     usefulness_score: Optional[bool]
 
@@ -39,3 +39,4 @@ class GraphConfig(BaseModel):
     question_rewriter: bool = False
     usefulness_grader: bool = False
     hallucination_grader: bool = False
+    summarize_docs: bool = False

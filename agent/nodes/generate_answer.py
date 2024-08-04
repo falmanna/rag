@@ -11,7 +11,7 @@ from agent.utils.misc import print_with_time
 
 class Generation(BaseModel):
     answer: str = Field(description="Answer to the user question")
-    references: Optional[list[str]] = Field(
+    references: Optional[str] = Field(
         description="Cite the fact that support your decision from the context (if any)"
     )
 
@@ -27,8 +27,7 @@ class GenerateAnswer(BaseNode):
         structured_llm_query_writer = llm.with_structured_output(Generation)
 
         system = """You are an assistant specialized in answering questions in Arabic. \n
-        Use the provided context to answer the question. \n
-        If you don't know the answer, say so. \n
+        Use the provided context to return an 'answer' the question. \n
         Keep your answer concise, using a maximum of three sentences. \n
         Cite any supporting facts as 'references'. \n
         Respond only in Arabic."""
@@ -36,7 +35,7 @@ class GenerateAnswer(BaseNode):
         prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", system),
-                ("human", "Question: {question} \n\n  Context: {context}"),
+                ("human", "Question: {question} \nContext: {context}"),
             ]
         )
 
