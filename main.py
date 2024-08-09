@@ -1,6 +1,7 @@
 from langchain.globals import set_debug, set_verbose
 
 from agent.graph import get_main_graph
+from agent.state import GraphConfig
 from agent.utils.misc import print_with_time
 
 set_verbose(False)
@@ -18,13 +19,9 @@ if __name__ == "__main__":
                 "question": "ما هو تاريخ بدء التقويم الهجري، وما هو الحدث الذي تم اعتماده كنقطة انطلاق لهذا التقويم؟"
             },
             config={
-                "configurable": {
-                    "embedding_rerank": True,
-                    "usefulness_grader": True,
-                    "hallucination_grader": True,
-                    "question_rewriter": True,
-                    "llm_rerank": True,
-                }
+                "configurable": GraphConfig(
+                    embedding_rerank=True, question_rewriter=True
+                ).dict()
             },
         ).get("generation")
     )

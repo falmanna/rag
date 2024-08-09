@@ -33,7 +33,8 @@ protobuf = "4.25.4"
 datasets = "^2.20.0"
 
 chainlit = "^1.1.400"
-
+neo4j = "^5.23.1"
+tiktoken = "^0.7.0"
 
 [build-system]
 requires = ["poetry-core"]

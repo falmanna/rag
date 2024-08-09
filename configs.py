@@ -7,17 +7,24 @@ load_dotenv()
 # Database configuration
 VECTOR_STORE = os.environ.get("VECTOR_STORE")
 
-PGVECTOR_HOST = os.environ.get("PGVECTOR_HOST")
+NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME", "neo4j")
+NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "password")
+NEO4J_URL = os.environ.get("NEO4J_URL", "http://localhost:7687")
+
+PGVECTOR_HOST = os.environ.get("PGVECTOR_HOST", "pgvector")
 PGVECTOR_PORT = int(os.environ.get("PGVECTOR_PORT", 5432))
-PGVECTOR_USER = os.environ.get("PGVECTOR_USER")
-PGVECTOR_PASSWORD = os.environ.get("PGVECTOR_PASSWORD")
-PGVECTOR_DATABASE = os.environ.get("PGVECTOR_DATABASE")
+PGVECTOR_USER = os.environ.get("PGVECTOR_USER", "postgres")
+PGVECTOR_PASSWORD = os.environ.get("PGVECTOR_PASSWORD", "feras123456")
+PGVECTOR_DATABASE = os.environ.get("PGVECTOR_DATABASE", "feras")
 
 # Embeddings configuration
 EMBEDDING_PROVIDER = os.environ.get("EMBEDDING_PROVIDER")
 EMBEDDING_MODEL_NAME = os.environ.get("EMBEDDING_MODEL_NAME")
 EMBEDDING_DEVICE = os.environ.get("EMBEDDING_DEVICE")
 EMVEDDING_DIMENSION = int(os.environ.get("EMVEDDING_DIMENSION"))
+
+# Reranking configs
+RERANKING_PROVIDER = os.environ.get("RERANKING_PROVIDER")
 RERANKING_MODEL_NAME = os.environ.get("RERANKING_MODEL_NAME")
 
 # LLM configuration

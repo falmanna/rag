@@ -1895,6 +1895,25 @@ files = [
 ]
 
 [[package]]
+name = "neo4j"
+version = "5.23.1"
+description = "Neo4j Bolt driver for Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "neo4j-5.23.1-py3-none-any.whl", hash = "sha256:97996fbf39421e0677fdcb8afe50b6810cbe8027e055a9dcf81da6070a82a009"},
+    {file = "neo4j-5.23.1.tar.gz", hash = "sha256:e2d3399d1124319489b25d5eda99833ae086e1fffef9946d36241652d26b26a0"},
+]
+
+[package.dependencies]
+pytz = "*"
+
+[package.extras]
+numpy = ["numpy (>=1.7.0,<2.0.0)"]
+pandas = ["numpy (>=1.7.0,<2.0.0)", "pandas (>=1.1.0,<3.0.0)"]
+pyarrow = ["pyarrow (>=1.0.0)"]
+
+[[package]]
 name = "nest-asyncio"
 version = "1.6.0"
 description = "Patch asyncio to allow nested event loops"
@@ -4704,4 +4723,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "c87626639c16dcd7f0326b8a64feb3143fe47155842092d12e145e8337be8524"
+content-hash = "07c9c77dcb557290ef55647a0778f813c628aac040750b939ac040a64e6a7a1d"
