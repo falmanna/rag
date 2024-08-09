@@ -1,3 +1,5 @@
+import logging
+
 from langchain_community.vectorstores import Neo4jVector
 from langchain_community.vectorstores.pgvecto_rs import PGVecto_rs
 from langchain_core.vectorstores import VectorStore
@@ -29,12 +31,15 @@ def get_vectorstore(
             )
 
         case "neo4j":
+            neo4j_log = logging.getLogger("neo4j")
+            neo4j_log.setLevel(logging.CRITICAL)
             return Neo4jVector(
                 username=NEO4J_USERNAME,
                 password=NEO4J_PASSWORD,
                 url=NEO4J_URL,
                 embedding=get_embedding(device=embedding_device),
                 search_type="hybrid",
+                logger=neo4j_log,
             )
 
         case _:

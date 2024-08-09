@@ -13,10 +13,10 @@ from tqdm.asyncio import tqdm
 from agent.utils.misc import print_with_time
 from agent.utils.vectorstore import get_vectorstore
 from configs import (
+    CHUNK_CHARACTER_MIN_SIZE,
     CHUNK_CHARACTER_OVERLAP,
     CHUNK_CHARACTER_SIZE,
     CHUNK_INDEXING_BATCH_SIZE,
-    CHUNK_MIN_SIZE,
     CHUNK_QUEUE_MAX_SIZE,
     NUMBER_OF_CORES,
 )
@@ -77,7 +77,7 @@ async def split_documents(
                 chunk_pool, splitter.split_documents, [document]
             )
             for chunk in chunks:
-                if len(chunk.page_content) > CHUNK_MIN_SIZE:
+                if len(chunk.page_content) > CHUNK_CHARACTER_MIN_SIZE:
                     await queue.put(chunk)
             pbar.update(1)
     await queue.put(None)  # Signal that splitting is done
