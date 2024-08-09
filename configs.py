@@ -9,7 +9,7 @@ VECTOR_STORE = os.environ.get("VECTOR_STORE")
 
 NEO4J_USERNAME = os.environ.get("NEO4J_USERNAME", "neo4j")
 NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "password")
-NEO4J_URL = os.environ.get("NEO4J_URL", "http://localhost:7687")
+NEO4J_URL = os.environ.get("NEO4J_URL", "bolt://localhost:7687")
 
 PGVECTOR_HOST = os.environ.get("PGVECTOR_HOST", "pgvector")
 PGVECTOR_PORT = int(os.environ.get("PGVECTOR_PORT", 5432))

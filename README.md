@@ -32,6 +32,8 @@ docker compose --profile xxx --profile xxx up -d --build
 ```
 > If you face GPU compatibility issues with any dependency please head to the official installation guide of that dependency and install it on your system.
 
+> Infinity will take some time to download the embeddings on startup.
+
 ## Ingestion
 Run the ingestion script to chunk and index the dataset into the vector store.
 ```
