@@ -39,7 +39,7 @@ Run the ingestion script to chunk and index the dataset into the vector store.
 ```
 python ingestion.py
 ```
-> Ingesting the dataset takes about 4 hours (laptop CPU i7, GPU 3070ti), performance may vary depending on the machine and configs.
+> Ingesting the dataset takes about 1 hours (laptop CPU i7, GPU 3070ti) using elasticsearch vectorstore and smallest embedding, performance may vary depending on the machine and configs.
 ## Running the Agent
 
 ### Run the Agent
