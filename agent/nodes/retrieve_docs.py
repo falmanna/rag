@@ -21,5 +21,5 @@ class RetrieveDocs(BaseNode):
         query = state.query
 
         rerank: bool = config["configurable"].get("embedding_rerank")
-        documents = get_retriever(rerank=rerank, limit=2).invoke(query)
+        documents = get_retriever(rerank=rerank, limit=3).invoke(query)
         return {"documents": documents}

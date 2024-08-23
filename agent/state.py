@@ -34,9 +34,9 @@ class RetrieverSubGraphState(BaseModel):
 
 
 class GraphConfig(BaseModel):
-    embedding_rerank: bool = False
+    embedding_rerank: bool = True
     llm_rerank: bool = False
-    question_rewriter: bool = False
+    question_rewriter: bool = True
     usefulness_grader: bool = False
     hallucination_grader: bool = False
     summarize_docs: bool = False

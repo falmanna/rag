@@ -11,7 +11,7 @@ from agent.utils.misc import print_with_time
 
 
 class GeneratedQueries(BaseModel):
-    queries: str = Field(description="Comma separated list of generated queries")
+    queries: str = Field(description="Comma-separated list of generated queries")
 
 
 class QueryGenerator(BaseNode):

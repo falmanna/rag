@@ -14,6 +14,7 @@ async def update_settings(settings):
         question_rewriter=settings["question_rewriter"],
         usefulness_grader=settings["usefulness_grader"],
         hallucination_grader=settings["hallucination_grader"],
+        summarize_docs=settings["summarize_docs"],
     )
 
     cl.user_session.set("configs", configs)
@@ -22,7 +23,7 @@ async def update_settings(settings):
 
 @cl.on_chat_start
 async def on_chat_start():
-    await cl.ChatSettings(
+    settings = cl.ChatSettings(
         [
             Switch(
                 id="embedding_rerank", label="Enable embedding rerank", initial=True
@@ -45,10 +46,21 @@ async def on_chat_start():
                 initial=False,
             ),
         ]
-    ).send()
+    )
+    await settings.send()
+
+    configs = GraphConfig(
+        embedding_rerank=settings.settings()["embedding_rerank"],
+        llm_rerank=settings.settings()["llm_rerank"],
+        question_rewriter=settings.settings()["question_rewriter"],
+        usefulness_grader=settings.settings()["usefulness_grader"],
+        hallucination_grader=settings.settings()["hallucination_grader"],
+        summarize_docs=settings.settings()["summarize_docs"],
+    )
 
     app = get_main_graph()
     cl.user_session.set("app", app)
+    cl.user_session.set("configs", configs)
 
 
 @cl.on_message
@@ -60,7 +72,7 @@ async def on_message(msg: cl.Message):
     try:
         async for event in app.astream(
             {"question": msg.content},
-            config={"configurable": configs.dict()} if configs else {},
+            config={"configurable": configs.dict()} if configs else None,
         ):
             print("EVENT:", event)
             for key in event.keys():
