@@ -1,8 +1,8 @@
+import os
 from typing import Any
 
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.runnables.config import RunnableConfig
+from pydantic import BaseModel, Field
 
 from agent.nodes.base import BaseNode
 from agent.state import RetrieverSubGraphState
@@ -26,24 +26,7 @@ class GradeDocuments(BaseNode):
 
     @classmethod
     def get_chain(cls):
-        llm = get_llm()
-        structured_llm_grader = llm.with_structured_output(DocumentsGrade)
-
-        system = """You are an Arabic grader assessing the relevance of retrieved Arabic documents to a user question. \n 
-        If the document's semantic meaning closely matches the question's meaning, grade it as relevant. \n
-        Provide a binary score of 'true' for relevant and 'false' for not relevant. \n
-        Explain your decision as the 'why'."""
-        grade_prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system),
-                (
-                    "human",
-                    "Retrieved documents: \n\n {documents} \n\n User Question: {question}",
-                ),
-            ]
-        )
-
-        return grade_prompt | structured_llm_grader
+        return get_llm()
 
     @classmethod
     def invoke(
@@ -57,9 +40,23 @@ class GradeDocuments(BaseNode):
 
         print_with_time("---CHECK DOCUMENT RELEVANCE TO QUESTION---")
         filtered_docs = []
+
+        system = """You are an Arabic grader assessing the relevance of retrieved Arabic documents to a user question. \n 
+        If the document's semantic meaning closely matches the question's meaning, grade it as relevant. \n
+        Provide a binary score of 'true' for relevant and 'false' for not relevant. \n
+        Explain your decision as the 'why'."""
+
         for d in documents:
-            score: DocumentsGrade = cls.get_chain().invoke(
-                {"question": question, "documents": d.page_content}
+            score: DocumentsGrade = cls.get_chain().chat.completions.create(
+                model=os.environ["LLM_MODEL_NAME"],
+                response_model=DocumentsGrade,
+                messages=[
+                    {"role": "system", "content": system},
+                    {
+                        "role": "user",
+                        "content": f"Retrieved documents: \n\n {d.page_content} \n\n User Question: {question}",
+                    },
+                ],
             )
             if score.relevant:
                 print_with_time(

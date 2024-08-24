@@ -1,7 +1,7 @@
+import os
 from typing import Optional
 
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
@@ -23,8 +23,14 @@ class GenerateAnswer(BaseNode):
 
     @classmethod
     def get_chain(cls):
-        llm = get_llm()
-        structured_llm_query_writer = llm.with_structured_output(Generation)
+        return get_llm()
+
+    @classmethod
+    def invoke(cls, state: GraphState):
+        print_with_time("---GENERATE---")
+        question = state.question
+        docs = state.documents
+        context = "\n\n".join([doc.page_content for doc in docs])
 
         system = """You are an assistant specialized in answering questions in Arabic. \n
         Use the provided context to return an 'answer' the question. \n
@@ -32,26 +38,16 @@ class GenerateAnswer(BaseNode):
         Cite any supporting facts as 'references'. \n
         Respond only in Arabic."""
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system),
-                ("human", "Question: {question} \nContext: {context}"),
-            ]
-        )
-
-        return prompt | structured_llm_query_writer
-
-    @classmethod
-    def invoke(cls, state: GraphState):
-        print_with_time("---GENERATE---")
-        question = state.question
-        docs = state.documents
-
-        generation: Generation = cls.get_chain().invoke(
-            {
-                "context": "\n\n".join([doc.page_content for doc in docs]),
-                "question": question,
-            }
+        generation: Generation = cls.get_chain().chat.completions.create(
+            model=os.environ["LLM_MODEL_NAME"],
+            response_model=Generation,
+            messages=[
+                {"role": "system", "content": system},
+                {
+                    "role": "user",
+                    "content": f"Question: {question} \nContext: {context}",
+                },
+            ],
         )
 
         return {

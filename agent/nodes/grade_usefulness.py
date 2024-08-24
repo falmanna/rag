@@ -1,6 +1,7 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
+import os
+
 from langchain_core.runnables.config import RunnableConfig
+from pydantic import BaseModel, Field
 
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
@@ -22,23 +23,7 @@ class GradeUsefulness(BaseNode):
 
     @classmethod
     def get_chain(cls):
-        llm = get_llm()
-        structured_llm_grader = llm.with_structured_output(UsefulnessGrade)
-
-        system = """You are a Arabic grader assessing whether an answer addresses / resolves a question. \n 
-        Give a binary score 'true' or 'false'. 'true' means that the answer resolves the question. \n
-        Explain why did you take your decision as the 'why'."""
-        answer_prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system),
-                (
-                    "human",
-                    "User question: \n\n {question} \n\n LLM generation: {generation} \n\n LLM references: {references}",
-                ),
-            ]
-        )
-
-        return answer_prompt | structured_llm_grader
+        return get_llm()
 
     @classmethod
     def invoke(cls, state: GraphState, config: RunnableConfig):
@@ -50,7 +35,20 @@ class GradeUsefulness(BaseNode):
             return {"usefulness_score": None}
 
         print_with_time("---GRADE USEFULNESS: ANSWER vs QUESTION---")
-        grade: UsefulnessGrade = cls.get_chain().invoke(
-            {"question": question, "generation": generation, "references": references}
+
+        system = """You are a Arabic grader assessing whether an answer addresses / resolves a question. \n 
+        Give a binary score 'true' or 'false'. 'true' means that the answer resolves the question. \n
+        Explain why did you take your decision as the 'why'."""
+
+        grade: UsefulnessGrade = cls.get_chain().chat.completions.create(
+            model=os.environ["LLM_MODEL_NAME"],
+            response_model=UsefulnessGrade,
+            messages=[
+                {"role": "system", "content": system},
+                {
+                    "role": "user",
+                    "content": f"User question: \n\n {question} \n\n LLM generation: {generation} \n\n LLM references: {references}",
+                },
+            ],
         )
         return {"usefulness_score": grade.binary_score}

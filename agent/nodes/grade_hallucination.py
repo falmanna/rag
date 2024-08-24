@@ -1,6 +1,7 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
+import os
+
 from langchain_core.runnables.config import RunnableConfig
+from pydantic import BaseModel, Field
 
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
@@ -22,24 +23,7 @@ class GradeHallucinations(BaseNode):
 
     @classmethod
     def get_chain(cls):
-        llm = get_llm()
-        structured_llm_grader = llm.with_structured_output(HallucinationsGrade)
-
-        system = """You are an Arabic grader assessing whether an LLM generation is supported by a set of retrieved facts. \n 
-        Give a binary score: 'true' or 'false'. \n
-        'false' means the answer is not a hallucination and is supported by the facts. \n
-        Explain your decision as the 'why'."""
-        hallucination_prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system),
-                (
-                    "human",
-                    "Set of facts: \n\n {documents} \n\n LLM generation: {generation} \n\n LLM references: {references}",
-                ),
-            ]
-        )
-
-        return hallucination_prompt | structured_llm_grader
+        return get_llm()
 
     @classmethod
     def invoke(cls, state: GraphState, config: RunnableConfig) -> str:
@@ -51,12 +35,22 @@ class GradeHallucinations(BaseNode):
             return {"hallucination_score": None}
 
         print_with_time("---GRADE HALLUCINATION: ANSWER vs QUESTION---")
-        hallucination: HallucinationsGrade = cls.get_chain().invoke(
-            {
-                "documents": [doc.page_content for doc in docs],
-                "generation": generation,
-                "references": references,
-            }
+
+        system = """You are an Arabic grader assessing whether an LLM generation is supported by a set of retrieved facts. \n 
+        Give a binary score: 'true' or 'false'. \n
+        'false' means the answer is not a hallucination and is supported by the facts. \n
+        Explain your decision as the 'why'."""
+
+        hallucination: HallucinationsGrade = cls.get_chain().chat.completions.create(
+            model=os.environ["LLM_MODEL_NAME"],
+            response_model=HallucinationsGrade,
+            messages=[
+                {"role": "system", "content": system},
+                {
+                    "role": "user",
+                    "content": f"Set of facts: \n\n {[doc.page_content for doc in docs]} \n\n LLM generation: {generation} \n\n LLM references: {references}",
+                },
+            ],
         )
 
         return {"hallucination_score": hallucination.binary_score}

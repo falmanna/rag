@@ -36,6 +36,10 @@ datasets = "^2.20.0"
 chainlit = "^1.1.400"
 neo4j = "^5.23.1"
 tiktoken = "^0.7.0"
+instructor = "^1.4.0"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]

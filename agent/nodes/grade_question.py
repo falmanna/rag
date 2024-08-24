@@ -1,5 +1,6 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
+import os
+
+from pydantic import BaseModel, Field
 
 from agent.nodes.base import BaseNode
 from agent.state import GraphState
@@ -20,25 +21,24 @@ class GradeQuestion(BaseNode):
 
     @classmethod
     def get_chain(cls):
-        llm = get_llm()
-        structured_llm_router = llm.with_structured_output(QuestionGrade)
-
-        system = """You are an expert at rating users questions in Arabic. \n
-        Give a binary score 'accepted' as true or false. \n
-        true means the question is in BOTH in Arabic language AND can be answered by searching Arabic wikipedia. \n
-        For all else, false."""
-        route_prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system),
-                ("human", "{question}"),
-            ]
-        )
-
-        return route_prompt | structured_llm_router
+        return get_llm()
 
     @classmethod
     def invoke(cls, state: GraphState):
         print_with_time("---GRADE QUESTION---")
         question = state.question
-        source: QuestionGrade = cls.get_chain().invoke({"question": question})
+
+        system = """You are an expert at rating users questions in Arabic. \n
+        Give a binary score 'accepted' as true or false. \n
+        true means the question is in BOTH in Arabic language AND can be answered by searching Arabic wikipedia. \n
+        For all else, false."""
+
+        source: QuestionGrade = cls.get_chain().chat.completions.create(
+            model=os.environ["LLM_MODEL_NAME"],
+            response_model=QuestionGrade,
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": question},
+            ],
+        )
         return {"question_accepted": source.accepted}

@@ -1,11 +1,7 @@
+import os
 from typing import Literal
 
-from langchain_cohere import ChatCohere
-from langchain_fireworks import ChatFireworks
-from langchain_groq import ChatGroq
-from langchain_ollama import ChatOllama
-from langchain_openai import ChatOpenAI
-from langchain_together import ChatTogether
+import instructor
 
 from configs import LLM_MODEL_NAME, LLM_PROVIDER
 
@@ -19,17 +15,51 @@ def get_llm(
 ):
     match provider:
         case "ollama":
-            return ChatOllama(model=model, temperature=temperature, format=format)
+            from openai import OpenAI
+
+            return instructor.from_openai(
+                OpenAI(
+                    base_url="http://localhost:11434/v1",
+                    api_key="ollama",
+                ),
+                mode=instructor.Mode.JSON,
+            )
         case "openai":
-            return ChatOpenAI(model=model, temperature=temperature)
+            from openai import OpenAI
+
+            return instructor.from_openai(OpenAI(), mode=instructor.Mode.TOOLS)
         case "cohere":
-            return ChatCohere(model=model, temperature=temperature)
+            from cohere import Client
+
+            return instructor.from_cohere(
+                Client(), mode=instructor.Mode.COHERE_JSON_SCHEMA
+            )
         case "together":
-            return ChatTogether(model=model, temperature=temperature)
+            from openai import OpenAI
+
+            return instructor.from_openai(
+                OpenAI(
+                    base_url="https://api.together.xyz/v1",
+                    api_key=os.environ["TOGETHER_API_KEY"],
+                ),
+                mode=instructor.Mode.TOOLS,
+            )
         case "groq":
-            return ChatGroq(model=model, temperature=temperature)
+            from groq import Groq
+
+            return instructor.from_groq(
+                Groq(api_key=os.environ.get("GROQ_API_KEY")), mode=instructor.Mode.TOOLS
+            )
         case "fireworks":
-            return ChatFireworks(model=model, temperature=temperature)
+            from openai import OpenAI
+
+            return instructor.from_openai(
+                OpenAI(
+                    base_url="https://api.fireworks.ai/inference/v1",
+                    api_key=os.environ["FIREWORKS_API_KEY"],
+                ),
+                mode=instructor.Mode.TOOLS,
+            )
 
         case _:
             raise ValueError(f"Unknown LLM provider: {provider}")
