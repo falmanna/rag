@@ -21,6 +21,7 @@ class GraphState(BaseModel):
     question_accepted: Optional[bool]
     queries: Optional[list[str]]
     documents: Annotated[list[Document], merge_and_deduplicate_lists]
+    compressed_documents: Optional[list[Document]]
     generation: Optional[str]
     references: Optional[str]
     hallucination_score: Optional[bool]

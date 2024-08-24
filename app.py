@@ -71,7 +71,7 @@ async def on_message(msg: cl.Message):
     response = None
     try:
         async for event in app.astream(
-            {"question": msg.content},
+            {"question": msg.content.strip()},
             config={"configurable": configs.dict()} if configs else None,
         ):
             print("EVENT:", event)

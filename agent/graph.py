@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from langgraph.constants import Send
 from langgraph.graph import END, StateGraph
 
+from agent.nodes.compress_docs import CompressDocs
 from agent.nodes.generate_answer import GenerateAnswer
 from agent.nodes.generate_queries import QueryGenerator
 from agent.nodes.grade_hallucination import GradeHallucinations
@@ -32,10 +33,6 @@ def send_queries(state: GraphState):
     ]
 
 
-def group_docs(state: GraphState):
-    return {"documents": state.documents}
-
-
 def get_main_graph():
     graph = StateGraph(GraphState, config_schema=GraphConfig)
 
@@ -46,6 +43,7 @@ def get_main_graph():
     graph.add_node(GradeUsefulness.get_name(), GradeUsefulness.invoke)
     graph.add_node(Reject.get_name(), Reject.invoke)
     graph.add_node("retriever_subgraph", get_retriever_graph())
+    graph.add_node(CompressDocs.get_name(), CompressDocs.invoke)
 
     graph.set_entry_point(GradeQuestion.get_name())
     graph.add_edge(Reject.get_name(), END)
@@ -65,11 +63,10 @@ def get_main_graph():
         QueryGenerator.get_name(), send_queries, ["retriever_subgraph"]
     )
 
-    graph.add_node("group_docs", group_docs)
-    graph.add_edge("retriever_subgraph", "group_docs")
+    graph.add_edge("retriever_subgraph", CompressDocs.get_name())
 
     graph.add_conditional_edges(
-        "group_docs",
+        CompressDocs.get_name(),
         decide_to_generate,
         {
             "generate": GenerateAnswer.get_name(),

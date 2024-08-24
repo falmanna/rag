@@ -11,7 +11,7 @@ from agent.utils.misc import print_with_time
 
 
 class GeneratedQueries(BaseModel):
-    queries: str = Field(description="Comma-separated list of generated queries")
+    queries: str = Field(description="Line-separated list of generated queries")
 
 
 class QueryGenerator(BaseNode):
@@ -29,7 +29,8 @@ class QueryGenerator(BaseNode):
         These queries will be used to retrieve relevant documents from a vector database. \n
         Create distinct and clear queries for each unique concept within the user's question. \n
         Ensure each query is standalone, isolated, and does not overlap or repeat information from other queries. \n
-        Avoid using vague or ambiguous references in your queries."""
+        Avoid using vague or ambiguous references in your queries. \n
+        Generate 3 queries at most."""
 
         prompt = ChatPromptTemplate.from_messages(
             [
@@ -51,4 +52,10 @@ class QueryGenerator(BaseNode):
             {"question": question}
         )
 
-        return {"queries": generated_queries.queries.split(",")}
+        return {
+            "queries": [
+                query
+                for query in generated_queries.queries.strip().split("\n")
+                if query
+            ]
+        }

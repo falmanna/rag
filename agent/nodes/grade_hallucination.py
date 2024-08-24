@@ -43,7 +43,7 @@ class GradeHallucinations(BaseNode):
 
     @classmethod
     def invoke(cls, state: GraphState, config: RunnableConfig) -> str:
-        docs = state.documents
+        docs = state.compressed_documents
         generation = state.generation
         references = state.references
 

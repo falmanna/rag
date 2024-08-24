@@ -12,7 +12,7 @@ from agent.utils.misc import print_with_time
 class Generation(BaseModel):
     answer: str = Field(description="Answer to the user question")
     references: Optional[str] = Field(
-        description="Cite the fact that support your decision from the context (if any)"
+        description="Cite the factual sentence that support your decision from the context (if any)"
     )
 
 
@@ -45,7 +45,7 @@ class GenerateAnswer(BaseNode):
     def invoke(cls, state: GraphState):
         print_with_time("---GENERATE---")
         question = state.question
-        docs = state.documents
+        docs = state.compressed_documents
 
         generation: Generation = cls.get_chain().invoke(
             {
