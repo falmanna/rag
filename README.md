@@ -39,7 +39,7 @@ Run the ingestion script to chunk and index the dataset into the vector store.
 ```
 python ingestion.py
 ```
-> Ingesting the dataset takes about 1 hours (laptop CPU i7, GPU 3070ti) using elasticsearch vectorstore and smallest embedding, performance may vary depending on the machine and configs.
+> Ingesting Arabic wikipedia dataset takes about 1 hour (laptop CPU i7, GPU 3070ti) using elasticsearch vectorstore and the smallest embedding, performance may vary depending on the machine and configs.
 ## Running the Agent
 
 ### Run the Agent
